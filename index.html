@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Women Safety GPS Alert</title>
+</head>
+<body style="text-align:center; margin-top:100px; font-family:Arial;">
+
+<h1>Women Safety Emergency System</h1>
+
+<button onclick="sendAlert()" 
+style="padding:20px; font-size:20px; background:red; color:white; border:none; border-radius:10px;">
+
+</button>
+
+<script>
+function sendAlert() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+
+            fetch('/send-location', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                })
+            })
+            .then(res => res.text())
+            .then(data => alert(data));
+
+        });
+    } else {
+        alert("Geolocation not supported");
+    }
+}
+</script>
+
+</body>
+</html>
